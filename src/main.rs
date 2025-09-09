@@ -1,3 +1,70 @@
+// implementing map function
+fn map_impl<T, U, F>(arr: &[T], f: F) -> Vec<U>
+where
+    F: Fn(&T) -> U,
+{
+    arr.iter().map(f).collect()
+}
+//  compose function 
+// compose(f, g)(x) = g(f(x))..computes g of f(x)
+
+fn compose<A, B, C, F, G>(f: F, g: G) -> impl Fn(A) -> C
+where
+    F: Fn(A) -> B,
+    G: Fn(B) -> C,
+{
+    move |x| g(f(x))
+}
+
+fn add_one(x: i32) -> i32 {
+    x + 1
+}
+
+// square function
+fn square(x: i32) -> i32 {
+    x * x
+}
+// fucntion composition 
+// sample example
+// f(x) = 2x + 1
+// g(x) = x * x
+// f(g(x))= 2 (x *x ) +1 
+// f(g(2)) = 2(2x2) +1
+// f(g(2)) = 9
+// g(2) = 4
+// f(4) = 9
+// implementation of the above sample example 
+fn fog(f: fn(i32)->i32, g: fn(i32)->i32, x: i32)-> i32{
+    f(g(x))
+}
+fn first_function(x:i32) -> i32{
+    (2* x)+ 1
+}
+fn second_function(x:i32)-> i32{
+    x*x
+}
+// partial application 
+
+fn multiply(x:i32,y:i32) -> i32{
+    x * y
+}
+fn double(y:i32)-> i32{
+    multiply(2,y)
+}
+// factorial function 
+fn factorial(n: u64)->u64 {
+    if n == 0 {1} else {n * factorial(n-1) }
+}
+
+// partial composition example
+fn partial_compose<F, G, A, B, C>(f: F, g: G) -> impl Fn(A) -> C
+where
+    F: Fn(A) -> B + Copy,
+    G: Fn(B) -> C + Copy,
+{
+    move |x| g(f(x))
+}
+
 // pure function 
 fn sum(a:i32,b:i32)->i32{
     a+b
@@ -33,63 +100,6 @@ fn apply_twice(f: fn(i32) -> i32, x:i32)-> i32{
 }
 fn add_two(n:i32) -> i32{
     n + 2
-}
-// fucntion composition 
-// sample example
-// f(x) = 2x + 1
-// g(x) = x * x
-// f(g(x))= 2 (x *x ) +1 
-// f(g(2)) = 2(2x2) +1
-// f(g(2)) = 9
-// g(2) = 4
-// f(4) = 9
-// implementation of the above sample example 
-fn fog(f: fn(i32)->i32, g: fn(i32)->i32, x: i32)-> i32{
-    f(g(x))
-}
-fn first_function(x:i32) -> i32{
-    (2* x)+ 1
-}
-fn second_function(x:i32)-> i32{
-    x*x
-}
-// partial application 
-
-fn multiply(x:i32,y:i32) -> i32{
-    x * y
-}
-fn double(y:i32)-> i32{
-    multiply(2,y)
-}
-// factorial function 
-fn factorial(n: u64)->u64 {
-    if n == 0 {1} else {n * factorial(n-1) }
-}
-// implementing map function
-fn map_impl<T, U, F>(arr: &[T], f: F) -> Vec<U>
-where
-    F: Fn(&T) -> U,
-{
-    arr.iter().map(f).collect()
-}
-//  compose function 
-// compose(f, g)(x) = g(f(x))..computes g of f(x)
-
-fn compose<A, B, C, F, G>(f: F, g: G) -> impl Fn(A) -> C
-where
-    F: Fn(A) -> B,
-    G: Fn(B) -> C,
-{
-    move |x| g(f(x))
-}
-
-fn add_one(x: i32) -> i32 {
-    x + 1
-}
-
-// square function
-fn square(x: i32) -> i32 {
-    x * x
 }
 // builder pattern 
 struct User {
@@ -138,14 +148,6 @@ enum Color{
     Red,
     Green,
     Blue,
-}
-// partial composition example
-fn partial_compose<F, G, A, B, C>(f: F, g: G) -> impl Fn(A) -> C
-where
-    F: Fn(A) -> B + Copy,
-    G: Fn(B) -> C + Copy,
-{
-    move |x| g(f(x))
 }
 
 // pattern matching with structs
